@@ -1,0 +1,206 @@
+/* Reset + base */
+
+* {
+    margin: 0;
+    padding: 0;
+    Box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #111827;
+}
+
+.site-navbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #111827;
+    font-size: 16px;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-primary-custom {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-primary-custom:hover {
+    background-color: #1e40af;
+}
+
+.btn-secondary-custom {
+    background-color: #f59e0b;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-secondary-custom:hover {
+    background-color: #d97706;
+}
+
+.hero-section {
+    margin-top: 32px;
+}
+
+.hero-carousel {
+    background-color: #d1d5d8;
+    padding: 32px;
+    align-items: end;
+    min-height: 400px;
+}
+
+.hero-content h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.carousel-slide {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-image-placeholder {
+    width: 100%;
+    height: 360px;
+    background-color: #e5e7eb;
+}
+
+.carousel-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 12px;
+    padding: 32px;
+    background: linear-gradient(to top, rgba(17, 24, 39, 0.75), 17, 24, 29, 0.2);
+    color: #ffffff;
+}
+
+.hero-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #111827;
+    cursor: pointer;
+}
+
+.carousel-btn.left {
+    left: 16px;
+}
+
+.carousel-btn.right {
+    right: 16px;
+}
+
+.hero-text {
+    margin-bottom: 16px;
+}
+
+.search-section {
+    margin-top: 24px;
+}
+
+.search-input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0 16px;
+}
+
+.home-listings-section {
+    margin-top: 32px;
+}
+
+.seaction-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-heading h2 {
+    font-size: 24px;
+}
+
+.view-all-link {
+    text-decoration: none;
+    color: #2563eb;
+}
+
+.listing-card {
+    background-color: #ffffff;
+    border: 1px solis #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.listing-image-placeholder {
+    width: 100%;
+    height: 180px;
+    background-color: #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.listing-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.listing-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.listing-card p {
+    margin-bottom: 4px;
+}
+
+.listing-deadline {
+    font-size: 14px;
+    margin-bottom: 12px;
+}

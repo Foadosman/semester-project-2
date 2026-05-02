@@ -69,6 +69,16 @@ function renderListing(listing) {
                 <p class="text-muted mb-2">Bids: ${listing._count.bids ?? 0}</P>
                 <p class="mb-3">Ends: ${endsAtText}</p>
                 <p class="mb-4">${listing.description || "No description available"}</p>
+                <form id="bidForm" class="d-flex gap-2 my-3">
+                    <input
+                        type="number"
+                        id="bidAmount"
+                        class="form-control"
+                        placeholder="Enter bid amount"
+                        required
+                    >
+                    <button type="submit" class="btn btn-primary-custom">Place bid</button>
+                </form>
                 <div class="bid-history mt-4">
                     <h2 class="h4">Bid History</h2>
                     <div id="bidHistoryContainer"></div>
@@ -76,6 +86,38 @@ function renderListing(listing) {
             </div>
         </div>
     `;
+
+    const bidForm = document.getElementById("bidForm");
+
+    if (bidForm) {
+        bidForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const amount = document.getElementById("bidAmount").value;
+
+            const token = localStorage.getItem("token");
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auction/listings/${listing.id}/bids`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                        "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
+                    },
+                    body: JSON.stringify({
+                        amount: Number(amount)
+                    })
+                });
+
+                const result = await response.json();
+                console.log("Bid result:", result);
+                fetchListing();
+            } catch (error) {
+                console.error("Bid failed:", error);
+            }
+        });
+    }
     
     const mainImage = document.getElementById("mainListingImage");
     const thumbnails = document.querySelectorAll(".listing-thumbnail");

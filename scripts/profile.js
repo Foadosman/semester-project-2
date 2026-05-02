@@ -53,6 +53,10 @@ function renderListings(listings) {
                 ? listing.media[0].url
                 : "";
 
+        const endsAtText = listing.endsAt
+            ? new Date(listing.endsAt).toLocaleDateString()
+            : "No deadline set";
+
         col.innerHTML = `
             <div class="listing-card p-3 shadow-sm h-100">
                 ${
@@ -60,7 +64,9 @@ function renderListings(listings) {
                         ? `<img src="${imageUrl}" class="img-fluid rounded mb-2">`
                         : `<div class="listing-image-placeholder"></div>`
                 }
-                <h3 class="h6">${listing.title}</h3>
+                <h3 class="h5 mb-1">${listing.title}</h3>
+                <p class="text-muted mb-1">Bids: ${listing._count?.bids ?? 0}</p>
+                <p class="listing-deadline">Ends: ${endsAtText}</P>
                 <a href="../listings/listing.html?id=${listing.id}" class="btn btn-secondary-custom mt-2">View</a>
             </div>
         `;

@@ -7,7 +7,7 @@ let allListings = [];
 
 async function fetchListings () {
     try {
-        const response = await fetch(`${API_BASE_URL}/auction/listings`);
+        const response = await fetch(`${API_BASE_URL}/auction/listings?sort=created&sortOrder=desc`);
         const result = await response.json();
 
         allListings = result.data;

@@ -2,6 +2,8 @@ import { API_BASE_URL } from "./api.js";
 
 const listingContainer = document.getElementById("listingContainer");
 
+const username = localStorage.getItem("username");
+
 const params = new URLSearchParams(window.location.search);
 const listingId = params.get("id");
 
@@ -69,16 +71,27 @@ function renderListing(listing) {
                 <p class="text-muted mb-2">Bids: ${listing._count.bids ?? 0}</P>
                 <p class="mb-3">Ends: ${endsAtText}</p>
                 <p class="mb-4">${listing.description || "No description available"}</p>
-                <form id="bidForm" class="d-flex gap-2 my-3">
-                    <input
-                        type="number"
-                        id="bidAmount"
-                        class="form-control"
-                        placeholder="Enter bid amount"
-                        required
-                    >
-                    <button type="submit" class="btn btn-primary-custom">Place bid</button>
-                </form>
+                ${
+                    listing.seller?.name === username
+                     ? `
+                        <div class="d-flex gap-2 my-3">
+                            <a href="./edit.html?id=${listing.id}" class="btn btn-primary-custom">Edit listing</a>
+                            <buttun id="deleteListingBtn" class="btn btn-danger">Delete listing</button>
+                        </div>
+                    `
+                : `
+                    <form id="bidForm" class="d-flex gap-2 my-3">
+                        <input
+                            type="number"
+                            id="bidAmount"
+                            class="form-control"
+                            placeholder="Enter bid amount"
+                            required
+                        >
+                        <button type="submit" class="btn btn-primary-custom">Place bid</button>
+                    </form>
+                    `
+                }
                 <div class="bid-history mt-4">
                     <h2 class="h4">Bid History</h2>
                     <div id="bidHistoryContainer"></div>
@@ -115,6 +128,30 @@ function renderListing(listing) {
                 fetchListing();
             } catch (error) {
                 console.error("Bid failed:", error);
+            }
+        });
+    }
+
+    const deleteListingBtn = document.getElementById("deleteListingBtn");
+
+    if (deleteListingBtn) {
+        deleteListingBtn.addEventListener("click", async () =>{
+            const token = localStorage.getItem("token");
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auction/listings/${listing.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
+                    }
+                });
+
+                console.log("Delete response:", response);
+
+                window.location.href = "../profile/index.html";
+            } catch (error) {
+                console.error("Delete failed", error);
             }
         });
     }

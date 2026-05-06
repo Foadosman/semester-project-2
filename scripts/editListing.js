@@ -79,7 +79,7 @@ if (form) {
 
             console.log("update listing result:", result);
 
-            //window.location.href = `./listing.html?id=${listingId}`;
+            window.location.href = `./listing.html?id=${listingId}`;
         } catch (error) {
             console.error("Failed to update listing:", error);
         }

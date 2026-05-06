@@ -35,9 +35,24 @@ async function fetchProfile() {
 
 function renderProfile(profile) {
     profileInfo.innerHTML = `
+        ${
+            profile.banner?.url
+                ? `<img src="${profile.banner.url}" alt="${profile.banner.alt || "Profile banner"}" class="img-fluid rounded mb-3">`
+                : ""
+        }
+
+        ${
+            profile.avatar?.url
+                ?`<img src="${profile.avatar.url}" alt="${profile.avatar.alt || "Profile avatar"}" class="profile-avatar mb-3">`
+                : ""
+        }
+        
         <p><strong>Username:</strong> ${profile.name}</p>
         <p><strong>Email:</strong> ${profile.email}</p>
+        <p><strong>Bio:</strong> ${profile.bio || "No bio yet"}</p>
         <p><strong>Credits:</strong> ${profile.credits}</p>
+
+        <a href="./edit.html" class="btn btn-primary-custom mt-3">Edit profile</a>
     `;
 }
 

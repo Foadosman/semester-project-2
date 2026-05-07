@@ -2,6 +2,7 @@ import { API_BASE_URL } from "./api.js";
 
 const profileInfo = document.getElementById("profileInfo");
 const profileListings = document.getElementById("profileListings");
+const profileBids = document.getElementById("profileBids");
 
 const token = localStorage.getItem("token");
 const username = localStorage.getItem("username");
@@ -28,6 +29,7 @@ async function fetchProfile() {
 
         renderProfile(result.data);
         renderListings(result.data.listings);
+        fetchProfileBids();
     } catch (error) {
         console.error("failed to fetch profile:", error);
     }
@@ -87,6 +89,67 @@ function renderListings(listings) {
         `;
 
         profileListings.appendChild(col);
+    });
+}
+
+async function fetchProfileBids() {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/auction/profiles/${username}/bids?_listings=true`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        console.log("profile bids:", result.data);
+        renderBidListings(result.data);
+    } catch (error) {
+        console.error("Failed to fetch profile bids:", error)
+    }
+}
+
+function renderBidListings(bids) {
+    profileBids.innerHTML = "";
+
+    bids.forEach((bid) => {
+        const listing = bid.listing;
+
+        if(!listing) {
+            return;
+        }
+
+        const col = document.createElement("div");
+        col.classList.add("col-12", "col-md-6", "col-lg-4");
+
+        const imageUrl = 
+            listing.media && listing.media.length > 0 && listing.media[0].url
+             ? listing.media[0].url
+             : "";
+
+        const endsAtText = listing.endsAt
+            ? new Date(listing.endsAt).toLocaleDateString()
+            : "No deadline set";
+
+        col.innerHTML = `
+            <div class="listing-card p-3 shadow-sm h-100">
+                ${
+                    imageUrl
+                        ? `<img src="${imageUrl}" class="listing-image">`
+                        : `<div class="listing-image-placeholder"></div>`
+                }
+                <h3 class="h5 mb-1">${listing.title}</h3>
+                <p class="text-muted mb-1">Your bid: ${bid.amount} credits</p>
+                <p class="listing-deadline">Ends: ${endsAtText}</p>
+                <a href="../listings/listing.html?id=${listing.id}" class="btn btn-secondary-custom mt-2">View</a>
+            </div>
+        `;
+
+        profileBids.appendChild(col);
     });
 }
 

@@ -2,6 +2,7 @@ import { API_BASE_URL } from "./api.js";
 
 const listingsGrid = document.getElementById("listingsGrid");
 const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
 
 let allListings = [];
 
@@ -62,12 +63,23 @@ function renderListings(listings) {
 
 function filterAndRenderListings () {
     const searchValue = searchInput.value.trim().toLowerCase();
+    const sortValue = sortSelect.value;
 
-    let filteredListings = allListings;
+    let filteredListings = [...allListings];
 
     if (searchValue) {
         filteredListings = allListings.filter((listing) =>
             listing.title.toLowerCase().includes(searchValue)
+        );
+    }
+
+    if (sortValue === "newest") {
+        filteredListings.sort(
+            (a, b) => new Date(b.created) - new Date(a.created)
+        );
+    } else if (sortValue === "oldest") {
+        filteredListings.sort(
+            (a, b) => new Date(a.created) - new Date(b.created)
         );
     }
 
@@ -77,3 +89,4 @@ function filterAndRenderListings () {
 fetchListings();
 
 searchInput.addEventListener("input", filterAndRenderListings);
+sortSelect.addEventListener("change", filterAndRenderListings);

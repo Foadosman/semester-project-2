@@ -19,20 +19,12 @@ if (createListingForm) {
             title,
             description,
             endsAt,
-            media: [
-                {
-                    url: imageUrl1,
+            media: [imageUrl1, imageUrl2, imageUrl3]
+                .filter((url) => url)
+                .map((url) => ({
+                    url: url,
                     alt: title,
-                },
-                {
-                    url: imageUrl2,
-                    alt: title,
-                },
-                {
-                    url: imageUrl3,
-                    alt: title,
-                },
-            ],
+                })),
         };
 
         try {

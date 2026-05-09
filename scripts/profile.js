@@ -116,7 +116,17 @@ async function fetchProfileBids() {
 function renderBidListings(bids) {
     profileBids.innerHTML = "";
 
+    const uniqueBids = [];
+    const seenListings = new Set();
+
     bids.forEach((bid) => {
+        if (bid.listing && !seenListings.has(bid.listing.id)) {
+            seenListings.add(bid.listing.id);
+            uniqueBids.push(bid);
+        }
+    });
+
+    uniqueBids.forEach((bid) => {
         const listing = bid.listing;
 
         if(!listing) {

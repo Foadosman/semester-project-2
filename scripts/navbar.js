@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "./api.js";
 
 const navActions = document.getElementById("navActions");
+const mobileNavActions = document.getElementById("mobileNavActions");
 
 const token = localStorage.getItem("token");
 const username = localStorage.getItem("username");
@@ -9,8 +10,15 @@ if (navActions && token && username) {
     navActions.innerHTML = `
         <span class="me-3">Hello, ${username}</span>
         <span id="navCredits" class="me-3">Credits: ...</span>
-        <a href="/profile/index.html" class="btn btn-secondary-custom">Profile</a>
-        <button id="logoutBtn" class="btn btn-primary-custom">Logout</button>
+        <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+    `;
+
+    mobileNavActions.innerHTML = `
+        <span>Hello, ${username}</span>
+        <span id="mobileNavCredits">Credits: ...</span>
+        <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
+        <button id="mobileLogoutBtn" class="btn btn-danger">Logout</button>
     `;
 
     fetchCredits();
@@ -23,7 +31,22 @@ if (navActions && token && username) {
 
         window.location.href = "/index.html";
     });
-}
+
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+    if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            window.location.href = "/index.html";
+        });
+    }
+} else if (mobileNavActions) {
+        mobileNavActions.innerHTML = `
+            <a href="/auth/login.html" class="btn btn-primary-custom">Login</a>
+            <a href="/auth/register.html" class="btn btn-secondary-custom">Register</a>
+        `;
+    }
 
 async function fetchCredits() {
     try {
@@ -41,7 +64,22 @@ async function fetchCredits() {
         if (navCredits) {
             navCredits.textContent = `Credits: ${result.data.credits}`;
         }
+
+        const mobileNavCredits = document.getElementById("mobileNavCredits");
+
+        if (mobileNavCredits) {
+            mobileNavCredits.textContent = `Credits: ${result.data.credits}`;
+        }
     } catch (error) {
         console.error("Failed to fetch credits:", error);
     }
+}
+
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const mobileMenu = document.getElementById("mobileMenu");
+
+if (hamburgerBtn && mobileMenu) {
+    hamburgerBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("active");
+    });
 }

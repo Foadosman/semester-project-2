@@ -13,13 +13,20 @@ body {
 }
 
 .site-navbar {
-    max-width: 1200px;
     margin: 0 auto;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 10px 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background-color: white;
+}
+
+.logo-img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
 }
 
 .nav-links a {
@@ -60,10 +67,8 @@ body {
 }
 
 .hero-carousel {
-    background-color: #d1d5d8;
-    padding: 32px;
     align-items: end;
-    min-height: 400px;
+    box-shadow: 0 10px 30px rgba(23, 168, 230, 0.25);
 }
 
 .hero-content h1 {
@@ -98,8 +103,13 @@ body {
     justify-content: end;
     gap: 12px;
     padding: 32px;
-    background: linear-gradient(to top, rgba(17, 24, 39, 0.75), 17, 24, 29, 0.2);
     color: #ffffff;
+}
+
+.carousel-overlay .btn {
+    align-self: flex-start;
+    width: fit-content;
+    padding: 6px 12px;
 }
 
 .hero-label {
@@ -236,4 +246,44 @@ body {
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid #ddd;
+}
+
+.mobile-menu a {
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.mobile-menu.active {
+    display: flex;
+}
+
+/*mobile*/
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important;
+    }
+
+    .nav-actions {
+        display: none;
+    }
+
+    .hamburger-btn {
+        display: block;
+    }
 }

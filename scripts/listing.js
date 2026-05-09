@@ -180,7 +180,7 @@ function renderBidHistory(bids) {
     }
 
     bidHistoryContainer.innerHTML = [...bids]
-    .reverse()
+    .sort((a, b) => new Date(b.created) - new Date(a.created))
     .map(
         (bid) => `
             <div class="card p-2 mb-2 shadow-sm">

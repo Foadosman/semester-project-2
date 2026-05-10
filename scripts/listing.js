@@ -15,7 +15,6 @@ async function fetchListing() {
         renderListing(listing);
         renderBidHistory(listing.bids);
 
-        console.log("Single listing:", result.data);
     } catch (error) {
         console.error("Failed to fetch listing:", error);
     }

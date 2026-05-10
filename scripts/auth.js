@@ -24,6 +24,23 @@ if (registerForm) {
             });
 
             const result = await response.json();
+
+            if (!response.ok) {
+                alert(result.errors?.[0]?.message || "Registration failed");
+                return;
+            }
+
+            const registerMessage = document.getElementById("registerMessage");
+
+            registerMessage.innerHTML = `
+                <div class="alert alert-success">
+                    Registration successful! Redirecting to login...
+                </div>
+            `;
+
+            setTimeout(() => {
+                window.location.href = "./login.html";
+            }, 2000);
         
         } catch (error) {
             console.error("Register failed:", error);
@@ -54,10 +71,26 @@ if (loginForm) {
 
             const result = await response.json();
 
+            if (!response.ok) {
+                alert(result.errors?.[0]?.message || "Login failed");
+                return;
+            }
+
             const { accessToken, name } = result.data;
             localStorage.setItem("token", accessToken);
             localStorage.setItem("username", name);
-            window.location.href = "../index.html";
+
+            const loginMessage = document.getElementById("loginMessage");
+
+            loginMessage.innerHTML = `
+                <div class="alert alert-success">
+                    Login successful! Redirecting...
+                </div>
+            `;
+
+            setTimeout(() => {
+                window.location.href = "../index.html";
+            }, 2000);
         
         } catch (error) {
             console.error("Login failed:", error);

@@ -22,7 +22,6 @@ async function fetchListings () {
         allListings = result.data;
         renderListings(allListings);
 
-        console.log("Listings:", allListings);
     } catch (error) {
         console.error("Failed to fetch listings:", error);
     }

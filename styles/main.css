@@ -315,3 +315,9 @@ body {
         display: block;
     }
 }
+
+@media (max-width: 768px) {
+    .carousel-overlay .btn {
+        margin-bottom: 56px;
+    }
+}

@@ -8,15 +8,19 @@ const username = localStorage.getItem("username");
 
 if (navActions && token && username) {
     navActions.innerHTML = `
-        <span class="me-3">Hello, ${username}</span>
-        <span id="navCredits" class="me-3">Credits: ...</span>
+        <div class="user-info-pill me-3">
+            <span>Hello, ${username}</span>
+            <span id="navCredits">Credits: ...</span>
+        </div>
         <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
         <button id="logoutBtn" class="btn btn-danger">Logout</button>
     `;
 
     mobileNavActions.innerHTML = `
-        <span>Hello, ${username}</span>
-        <span id="mobileNavCredits">Credits: ...</span>
+        <div class="user-info-pill">
+            <span>Hello, ${username}</span>
+            <span id="mobileNavCredits">Credits: ...</span>
+        </div>
         <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
         <button id="mobileLogoutBtn" class="btn btn-danger">Logout</button>
     `;

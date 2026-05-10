@@ -124,6 +124,11 @@ function renderListing(listing) {
                 });
 
                 const result = await response.json();
+
+                if (!response.ok) {
+                    alert("Bid must be higher than current highest bid.");
+                    return;
+                }
                 console.log("Bid result:", result);
                 fetchListing();
             } catch (error) {

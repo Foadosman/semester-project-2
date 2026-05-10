@@ -6,76 +6,78 @@ const token = localStorage.getItem("token");
 const username = localStorage.getItem("username");
 
 async function fetchProfile() {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/auction/profiles/${username}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
-                }
-            }
-        );
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/auction/profiles/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
+        },
+      },
+    );
 
-        const result = await response.json();
-        const profile = result.data;
+    const result = await response.json();
+    const profile = result.data;
 
-        fillForm(profile);
-
-    } catch (error) {
-        console.error("Failed to fetch Profile:", error);
-    }
+    fillForm(profile);
+  } catch (error) {
+    console.error("Failed to fetch Profile:", error);
+  }
 }
 
 function fillForm(profile) {
-    document.getElementById("bio").value = profile.bio || "";
-    document.getElementById("avatar").value = profile.avatar?.url || "";
-    document.getElementById("banner").value = profile.banner?.url || "";
+  document.getElementById("bio").value = profile.bio || "";
+  document.getElementById("avatar").value = profile.avatar?.url || "";
+  document.getElementById("banner").value = profile.banner?.url || "";
 }
 
 if (form) {
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault();
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        const bio = document.getElementById("bio").value.trim();
-        const avatar = document.getElementById("avatar").value.trim();
-        const banner = document.getElementById("banner").value.trim();
+    const bio = document.getElementById("bio").value.trim();
+    const avatar = document.getElementById("avatar").value.trim();
+    const banner = document.getElementById("banner").value.trim();
 
-        const profileData = {
-            bio: bio,
-            avatar: {
-                url: avatar,
-                alt: `${username} avatar`,
-            },
-            banner: {
-                url: banner,
-                alt: `${username} banner`,
-            },
-        };
+    const profileData = {
+      bio: bio,
+      avatar: {
+        url: avatar,
+        alt: `${username} avatar`,
+      },
+      banner: {
+        url: banner,
+        alt: `${username} banner`,
+      },
+    };
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/auction/profiles/${username}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                    "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
-                },
-                body: JSON.stringify(profileData),
-            });
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/auction/profiles/${username}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
+          },
+          body: JSON.stringify(profileData),
+        },
+      );
 
-            const result = await response.json();
+      const result = await response.json();
 
-            if (!response.ok) {
-                console.error("Profile update failed:", result);
-                return;
-            }
+      if (!response.ok) {
+        console.error("Profile update failed:", result);
+        return;
+      }
 
-            window.location.href = "./index.html";
-        } catch (error) {
-            console.error("Failed to update Prodile:", error);
-        }
-    });
+      window.location.href = "./index.html";
+    } catch (error) {
+      console.error("Failed to update Prodile:", error);
+    }
+  });
 }
 
 fetchProfile();

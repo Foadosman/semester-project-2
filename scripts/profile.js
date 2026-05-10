@@ -8,43 +8,43 @@ const token = localStorage.getItem("token");
 const username = localStorage.getItem("username");
 
 if (!token || !username) {
-    window.location.href = "../auth/login.html";
+  window.location.href = "../auth/login.html";
 }
 
 async function fetchProfile() {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/auction/profiles/${username}?_listings=true`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
-                }
-            }
-        );
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/auction/profiles/${username}?_listings=true`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
+        },
+      },
+    );
 
-        const result = await response.json();
+    const result = await response.json();
 
-        renderProfile(result.data);
-        renderListings(result.data.listings);
-        fetchProfileBids();
-    } catch (error) {
-        console.error("failed to fetch profile:", error);
-    }
+    renderProfile(result.data);
+    renderListings(result.data.listings);
+    fetchProfileBids();
+  } catch (error) {
+    console.error("failed to fetch profile:", error);
+  }
 }
 
 function renderProfile(profile) {
-    profileInfo.innerHTML = `
+  profileInfo.innerHTML = `
         ${
-            profile.banner?.url
-                ? `<img src="${profile.banner.url}" alt="${profile.banner.alt || "Profile banner"}" class="img-fluid rounded mb-3">`
-                : ""
+          profile.banner?.url
+            ? `<img src="${profile.banner.url}" alt="${profile.banner.alt || "Profile banner"}" class="img-fluid rounded mb-3">`
+            : ""
         }
 
         ${
-            profile.avatar?.url
-                ?`<img src="${profile.avatar.url}" alt="${profile.avatar.alt || "Profile avatar"}" class="profile-avatar mb-3">`
-                : ""
+          profile.avatar?.url
+            ? `<img src="${profile.avatar.url}" alt="${profile.avatar.alt || "Profile avatar"}" class="profile-avatar mb-3">`
+            : ""
         }
         
         <p><strong>Username:</strong> ${profile.name}</p>
@@ -57,27 +57,27 @@ function renderProfile(profile) {
 }
 
 function renderListings(listings) {
-    profileListings.innerHTML = "";
+  profileListings.innerHTML = "";
 
-    listings.forEach((listing) => {
-        const col = document.createElement("div");
-        col.classList.add("col-12", "col-md-6", "col-lg-4");
+  listings.forEach((listing) => {
+    const col = document.createElement("div");
+    col.classList.add("col-12", "col-md-6", "col-lg-4");
 
-        const imageUrl =
-            listing.media && listing.media.length > 0 && listing.media[0].url
-                ? listing.media[0].url
-                : "";
+    const imageUrl =
+      listing.media && listing.media.length > 0 && listing.media[0].url
+        ? listing.media[0].url
+        : "";
 
-        const endsAtText = listing.endsAt
-            ? new Date(listing.endsAt).toLocaleDateString()
-            : "No deadline set";
+    const endsAtText = listing.endsAt
+      ? new Date(listing.endsAt).toLocaleDateString()
+      : "No deadline set";
 
-        col.innerHTML = `
+    col.innerHTML = `
             <div class="listing-card p-3 shadow-sm h-100">
                 ${
-                    imageUrl
-                        ? `<a href="../listings/listing.html?id=${listing.id}"><img src="${imageUrl}" class="img-fluid rounded mb-2"></a>`
-                        : `<div class="listing-image-placeholder"></div>`
+                  imageUrl
+                    ? `<a href="../listings/listing.html?id=${listing.id}"><img src="${imageUrl}" class="img-fluid rounded mb-2"></a>`
+                    : `<div class="listing-image-placeholder"></div>`
                 }
                 <h3 class="h5 mb-1">${listing.title}</h3>
                 <p class="text-muted mb-1">Bids: ${listing._count?.bids ?? 0}</p>
@@ -86,68 +86,68 @@ function renderListings(listings) {
             </div>
         `;
 
-        profileListings.appendChild(col);
-    });
+    profileListings.appendChild(col);
+  });
 }
 
 async function fetchProfileBids() {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/auction/profiles/${username}/bids?_listings=true`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
-                }
-            }
-        );
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/auction/profiles/${username}/bids?_listings=true`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
+        },
+      },
+    );
 
-        const result = await response.json();
+    const result = await response.json();
 
-        renderBidListings(result.data);
-    } catch (error) {
-        console.error("Failed to fetch profile bids:", error)
-    }
+    renderBidListings(result.data);
+  } catch (error) {
+    console.error("Failed to fetch profile bids:", error);
+  }
 }
 
 function renderBidListings(bids) {
-    profileBids.innerHTML = "";
+  profileBids.innerHTML = "";
 
-    const uniqueBids = [];
-    const seenListings = new Set();
+  const uniqueBids = [];
+  const seenListings = new Set();
 
-    bids.forEach((bid) => {
-        if (bid.listing && !seenListings.has(bid.listing.id)) {
-            seenListings.add(bid.listing.id);
-            uniqueBids.push(bid);
-        }
-    });
+  bids.forEach((bid) => {
+    if (bid.listing && !seenListings.has(bid.listing.id)) {
+      seenListings.add(bid.listing.id);
+      uniqueBids.push(bid);
+    }
+  });
 
-    uniqueBids.forEach((bid) => {
-        const listing = bid.listing;
+  uniqueBids.forEach((bid) => {
+    const listing = bid.listing;
 
-        if(!listing) {
-            return;
-        }
+    if (!listing) {
+      return;
+    }
 
-        const col = document.createElement("div");
-        col.classList.add("col-12", "col-md-6", "col-lg-4");
+    const col = document.createElement("div");
+    col.classList.add("col-12", "col-md-6", "col-lg-4");
 
-        const imageUrl = 
-            listing.media && listing.media.length > 0 && listing.media[0].url
-             ? listing.media[0].url
-             : "";
+    const imageUrl =
+      listing.media && listing.media.length > 0 && listing.media[0].url
+        ? listing.media[0].url
+        : "";
 
-        const endsAtText = listing.endsAt
-            ? new Date(listing.endsAt).toLocaleDateString()
-            : "No deadline set";
+    const endsAtText = listing.endsAt
+      ? new Date(listing.endsAt).toLocaleDateString()
+      : "No deadline set";
 
-        col.innerHTML = `
+    col.innerHTML = `
             <div class="listing-card p-3 shadow-sm h-100">
                 ${
-                    imageUrl
-                        ? `<a href="../listings/listing.html?id=${listing.id}"><img src="${imageUrl}" class="listing-image"></a>`
-                        : `<div class="listing-image-placeholder"></div>`
+                  imageUrl
+                    ? `<a href="../listings/listing.html?id=${listing.id}"><img src="${imageUrl}" class="listing-image"></a>`
+                    : `<div class="listing-image-placeholder"></div>`
                 }
                 <h3 class="h5 mb-1">${listing.title}</h3>
                 <p class="text-muted mb-1">Your bid: ${bid.amount} credits</p>
@@ -156,8 +156,8 @@ function renderBidListings(bids) {
             </div>
         `;
 
-        profileBids.appendChild(col);
-    });
+    profileBids.appendChild(col);
+  });
 }
 
 fetchProfile();

@@ -8,41 +8,42 @@ const params = new URLSearchParams(window.location.search);
 const listingId = params.get("id");
 
 async function fetchListing() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/auction/listings/${listingId}?_bids=true&_seller=true`);
-        const result = await response.json();
-        const listing = result.data;
-        renderListing(listing);
-        renderBidHistory(listing.bids);
-
-    } catch (error) {
-        console.error("Failed to fetch listing:", error);
-    }
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/auction/listings/${listingId}?_bids=true&_seller=true`,
+    );
+    const result = await response.json();
+    const listing = result.data;
+    renderListing(listing);
+    renderBidHistory(listing.bids);
+  } catch (error) {
+    console.error("Failed to fetch listing:", error);
+  }
 }
 
 function renderListing(listing) {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    const imageUrl =
-        listing.media && listing.media.length > 0 && listing.media[0].url
-            ? listing.media[0].url
-            : "";
+  const imageUrl =
+    listing.media && listing.media.length > 0 && listing.media[0].url
+      ? listing.media[0].url
+      : "";
 
-    const imageAlt =
-        listing.media && listing.media.length > 0 && listing.media[0].alt
-            ? listing.media[0].alt
-            : "Listing image";
+  const imageAlt =
+    listing.media && listing.media.length > 0 && listing.media[0].alt
+      ? listing.media[0].alt
+      : "Listing image";
 
-    const endsAtText = listing.endsAt
-        ? new Date(listing.endsAt).toLocaleDateString()
-        : "No deadline set";
+  const endsAtText = listing.endsAt
+    ? new Date(listing.endsAt).toLocaleDateString()
+    : "No deadline set";
 
-    listingContainer.innerHTML = `
+  listingContainer.innerHTML = `
         <div class="row g-4">
             <div class="col-12 col-md-6">
                 ${
-                    listing.media && listing.media.length > 0
-                        ? `
+                  listing.media && listing.media.length > 0
+                    ? `
                             <img
                                 src="${listing.media[0].url}"
                                 alt="${listing.media[0].alt || "Listing image"}"
@@ -52,19 +53,19 @@ function renderListing(listing) {
                             
                             <div class="d-flex gap-2 flex-wrap">
                                 ${listing.media
-                                    .map(
-                                        (img) => `
+                                  .map(
+                                    (img) => `
                                             <img
                                                 src="${img.url}"
                                                 alt="${img.alt || "Listing image"}"
                                                 class="listing-thumbnail rounded"
                                             >
-                                        `
-                                    )
-                                    .join("")}
+                                        `,
+                                  )
+                                  .join("")}
                             </div>
                         `
-                        : `<div class= "listing-image-placeholder"></div>`
+                    : `<div class= "listing-image-placeholder"></div>`
                 }
             </div>
             <div class="col-12 col-md-6">
@@ -73,14 +74,16 @@ function renderListing(listing) {
                 <p class="mb-3">Ends: ${endsAtText}</p>
                 <p class="mb-4">${listing.description || "No description available"}</p>
                 
-                ${listing.seller?.name === username
-                     ? `
+                ${
+                  listing.seller?.name === username
+                    ? `
                         <div class="d-flex gap-2 my-3">
                             <a href="./edit.html?id=${listing.id}" class="btn btn-primary-custom">Edit listing</a>
                             <buttun id="deleteListingBtn" class="btn btn-danger">Delete listing</button>
                         </div>
                     `
-                : token?`
+                    : token
+                      ? `
                     <form id="bidForm" class="d-flex gap-2 my-3">
                         <input
                             type="number"
@@ -91,7 +94,8 @@ function renderListing(listing) {
                         >
                         <button type="submit" class="btn btn-primary-custom">Place bid</button>
                     </form>
-                    ` : `
+                    `
+                      : `
                         <div class="alert alert-info mt-3">
                             Please log in to place a bid.
                         </div>
@@ -105,103 +109,112 @@ function renderListing(listing) {
         </div>
     `;
 
-    const bidForm = document.getElementById("bidForm");
+  const bidForm = document.getElementById("bidForm");
 
-    if (bidForm) {
-        bidForm.addEventListener("submit", async (event) => {
-            event.preventDefault();
+  if (bidForm) {
+    bidForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-            const amount = document.getElementById("bidAmount").value;
+      const amount = document.getElementById("bidAmount").value;
 
-            const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/auction/listings/${listing.id}/bids`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                        "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
-                    },
-                    body: JSON.stringify({
-                        amount: Number(amount)
-                    })
-                });
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/auction/listings/${listing.id}/bids`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+              "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
+            },
+            body: JSON.stringify({
+              amount: Number(amount),
+            }),
+          },
+        );
 
-                const result = await response.json();
+        const result = await response.json();
 
-                if (!response.ok) {
-                    const errorMessage = result.errors?.[0]?.message || "Bid failed. Please try again.";
-                    alert(errorMessage);
-                    return;
-                }
-                fetchListing();
-            } catch (error) {
-                console.error("Bid failed:", error);
-            }
-        });
-    }
-
-    const deleteListingBtn = document.getElementById("deleteListingBtn");
-
-    if (deleteListingBtn) {
-        deleteListingBtn.addEventListener("click", async () =>{
-            const confirmed = confirm("Are you sure you want to delete this listing?");
-
-            if (!confirmed) {
-                return;
-            }
-
-            const token = localStorage.getItem("token");
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auction/listings/${listing.id}`, {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
-                    }
-                });
-
-                window.location.href = "../profile/index.html";
-            } catch (error) {
-                console.error("Delete failed", error);
-            }
-        });
-    }
-    
-    const mainImage = document.getElementById("mainListingImage");
-    const thumbnails = document.querySelectorAll(".listing-thumbnail");
-
-    thumbnails.forEach((thumb) => {
-        thumb.addEventListener("click", () => {
-            mainImage.src = thumb.src;
-            mainImage.alt = thumb.alt;
-        });
+        if (!response.ok) {
+          const errorMessage =
+            result.errors?.[0]?.message || "Bid failed. Please try again.";
+          alert(errorMessage);
+          return;
+        }
+        fetchListing();
+      } catch (error) {
+        console.error("Bid failed:", error);
+      }
     });
+  }
+
+  const deleteListingBtn = document.getElementById("deleteListingBtn");
+
+  if (deleteListingBtn) {
+    deleteListingBtn.addEventListener("click", async () => {
+      const confirmed = confirm(
+        "Are you sure you want to delete this listing?",
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/auction/listings/${listing.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba",
+            },
+          },
+        );
+
+        window.location.href = "../profile/index.html";
+      } catch (error) {
+        console.error("Delete failed", error);
+      }
+    });
+  }
+
+  const mainImage = document.getElementById("mainListingImage");
+  const thumbnails = document.querySelectorAll(".listing-thumbnail");
+
+  thumbnails.forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      mainImage.src = thumb.src;
+      mainImage.alt = thumb.alt;
+    });
+  });
 }
 
 function renderBidHistory(bids) {
-    const bidHistoryContainer = document.getElementById("bidHistoryContainer");
+  const bidHistoryContainer = document.getElementById("bidHistoryContainer");
 
-    if (!bidHistoryContainer) {
-        return;
-    }
+  if (!bidHistoryContainer) {
+    return;
+  }
 
-    if (!bids || bids.length === 0) {
-        bidHistoryContainer.innerHTML = `<p class="text-muted">No bids Yet.</p>`;
-        return;
-    }
+  if (!bids || bids.length === 0) {
+    bidHistoryContainer.innerHTML = `<p class="text-muted">No bids Yet.</p>`;
+    return;
+  }
 
-    bidHistoryContainer.innerHTML = [...bids]
+  bidHistoryContainer.innerHTML = [...bids]
     .sort((a, b) => new Date(b.created) - new Date(a.created))
     .map(
-        (bid) => `
+      (bid) => `
             <div class="card p-2 mb-2 shadow-sm">
                 <p class="mb-1"><strong>${bid.amount} credits</strong></p>
                 <p class="text-muted mb-0">Bidder: ${bid.bidder?.name || "unknown"}</p>
             </div>
-        `
+        `,
     )
     .join("");
 }

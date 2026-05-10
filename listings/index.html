@@ -1,27 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Listings | BidWorld</title>
-     <link
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../styles/main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../styles/main.css" />
+  </head>
+  <body>
     <header>
       <nav class="site-navbar">
-        <div class="nav-container d-flex align-items-center justify-content-between w-100">
-          <a href="../index.html" class="logo"><img src="../assets/icons/bid-world-logo.png" alt="Bidworld logo" class="logo-img"></a>
-          <div class="nav-links d-flex justify-content-center flex-grow-1 gap-4">
+        <div
+          class="nav-container d-flex align-items-center justify-content-between w-100"
+        >
+          <a href="../index.html" class="logo"
+            ><img
+              src="../assets/icons/bid-world-logo.png"
+              alt="Bidworld logo"
+              class="logo-img"
+          /></a>
+          <div
+            class="nav-links d-flex justify-content-center flex-grow-1 gap-4"
+          >
             <a href="../index.html">Home</a>
             <a href="../listings/index.html">Listings</a>
           </div>
           <div class="nav-actions" id="navActions">
-            <a href="../auth/login.html" class="btn btn-primary-custom">Login</a>
-            <a href="../auth/register.html" class="btn btn-secondary-custom">Register</a>
+            <a href="../auth/login.html" class="btn btn-primary-custom"
+              >Login</a
+            >
+            <a href="../auth/register.html" class="btn btn-secondary-custom"
+              >Register</a
+            >
           </div>
           <button class="hamburger-btn" id="hamburgerBtn">&#9776;</button>
         </div>
@@ -34,33 +47,40 @@
       </div>
     </header>
     <main>
-        <section class="listings-section mt-4">
-            <div class="container">
-                <div class="section-heading d-flex justify-content-between align-items-center">
-                    <h1 class="mb-0">All listings</h1>
-                </div>
+      <section class="listings-section mt-4">
+        <div class="container">
+          <div
+            class="section-heading d-flex justify-content-between align-items-center"
+          >
+            <h1 class="mb-0">All listings</h1>
+          </div>
 
-                <form class="search-form my-4">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        class="form-control"
-                        placeholder="Search listings...."
-                    >
+          <form class="search-form my-4">
+            <input
+              type="text"
+              id="searchInput"
+              class="form-control"
+              placeholder="Search listings...."
+            />
 
-                    <select id="sortSelect" class="form-select w-auto">
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                    </select>
-                </form>
-                <div id="createListingWrapper" class="d-flex justify-content-center mb-4">
-                  <a href="./create.html" class="btn btn-primary-custom">Create listing</a>
-                </div>
-                <div id="listingsGrid" class="row g-4"></div>
-            </div>
-        </section>
+            <select id="sortSelect" class="form-select w-auto">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+            </select>
+          </form>
+          <div
+            id="createListingWrapper"
+            class="d-flex justify-content-center mb-4"
+          >
+            <a href="./create.html" class="btn btn-primary-custom"
+              >Create listing</a
+            >
+          </div>
+          <div id="listingsGrid" class="row g-4"></div>
+        </div>
+      </section>
     </main>
     <script type="module" src="../scripts/listings.js"></script>
     <script type="module" src="../scripts/navbar.js"></script>
-</body>
+  </body>
 </html>

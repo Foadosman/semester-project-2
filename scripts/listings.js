@@ -4,6 +4,14 @@ const listingsGrid = document.getElementById("listingsGrid");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
 
+const token = localStorage.getItem("token");
+const createListingWrapper = document.getElementById("createListingWrapper");
+
+if (!token && createListingWrapper) {
+    createListingWrapper.classList.remove("d-flex");
+    createListingWrapper.classList.add("d-none");
+}
+
 let allListings = [];
 
 async function fetchListings () {
@@ -47,7 +55,7 @@ function renderListings(listings) {
         listingCard.innerHTML = `
             ${
                 imageUrl
-                    ? `<img src="${imageUrl}" alt="${imageAlt}" class="listing-image">`
+                    ? `<a href="./listing.html?id=${listing.id}"><img src="${imageUrl}" alt="${imageAlt}" class="listing-image"></a>`
                     : `<div class="listing-image-placeholder"></div>`
             }
             <h3 class="h5 mb-1">${listing.title}</h3>

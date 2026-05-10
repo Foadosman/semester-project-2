@@ -24,8 +24,6 @@ if (registerForm) {
             });
 
             const result = await response.json();
-
-            console.log("Register result:", result);
         
         } catch (error) {
             console.error("Register failed:", error);
@@ -55,8 +53,6 @@ if (loginForm) {
             });
 
             const result = await response.json();
-
-            console.log("Login result", result);
 
             const { accessToken, name } = result.data;
             localStorage.setItem("token", accessToken);

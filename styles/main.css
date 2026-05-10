@@ -114,7 +114,12 @@ body {
     justify-content: end;
     gap: 12px;
     padding: 32px;
-    color: #ffffff;
+    color: #111827;
+    background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0)
+);
 }
 
 .carousel-overlay .btn {
@@ -128,25 +133,32 @@ body {
     font-weight: 500;
 }
 
+#carouselContainer {
+    position: relative;
+}
+
 .carousel-btn {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 24px;
+    transform: none;
     width: 44px;
     height: 44px;
     border: none;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    background-color: #2563EB;
     color: #111827;
     cursor: pointer;
+    z-index: 5;
 }
 
 .carousel-btn.left {
-    left: 16px;
+    left: 50%;
+    transform: translateX(-60px);
 }
 
 .carousel-btn.right {
-    right: 16px;
+    right: 50%;
+    transform: translateX(60px);
 }
 
 .hero-text {
@@ -252,6 +264,11 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
+.auth-logo {
+    width: 40px;
+    margin-bottom: 15px;
+}
+
 .profile-avatar {
     width: 120px;
     height: 120px;
@@ -285,7 +302,7 @@ body {
 }
 
 /*mobile*/
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .nav-links {
         display: none !important;
     }

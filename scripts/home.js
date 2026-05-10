@@ -59,7 +59,7 @@ function renderListings(listings) {
          listingCard.innerHTML = `
             ${
                 imageUrl
-                    ? `<img src="${imageUrl}" alt="${imageAlt}" class="listing-image">`
+                    ? `<a href="./listings/listing.html?id=${listing.id}"><img src="${imageUrl}" alt="${imageAlt}" class="listing-image"></a>`
                     : `<div class="listing-image-placeholder"></div>`
             }
             <h3 class="h5 mb-1">${listing.title}</h3>

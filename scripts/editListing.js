@@ -16,7 +16,6 @@ async function fetchListing() {
 
         fillForm(listing);
 
-        console.log("Edit listing:", listing);
     } catch (error) {
         console.error("Failed to fetch listing:", error);
     }
@@ -68,8 +67,6 @@ if (form) {
             });
 
             const result = await response.json();
-
-            console.log("update listing result:", result);
 
             window.location.href = `./listing.html?id=${listingId}`;
         } catch (error) {

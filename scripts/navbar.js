@@ -10,20 +10,31 @@ if (navActions && token && username) {
     navActions.innerHTML = `
         <div class="user-info-pill me-3">
             <span>Hello, ${username}</span>
+            <span class="user-divider">|</span>
             <span id="navCredits">Credits: ...</span>
         </div>
         <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
         <button id="logoutBtn" class="btn btn-danger">Logout</button>
     `;
+    
+    const mobileUserInfo = document.getElementById("mobileUserInfo");
 
-    mobileNavActions.innerHTML = `
-        <div class="user-info-pill">
-            <span>Hello, ${username}</span>
-            <span id="mobileNavCredits">Credits: ...</span>
-        </div>
-        <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
-        <button id="mobileLogoutBtn" class="btn btn-danger">Logout</button>
-    `;
+    if (mobileUserInfo) {
+        mobileUserInfo.innerHTML = `
+            <div class="user-info-pill">
+                <span>Hello, ${username}</span>
+                <span class="user-divider">|</span>
+                <span id="mobileNavCredits">Credits: ...</span>
+            </div>
+        `;
+    }
+
+    if (mobileNavActions) {
+        mobileNavActions.innerHTML = `
+            <a href="/profile/index.html" class="btn btn-primary-custom">Profile</a>
+            <button id="mobileLogoutBtn" class="btn btn-danger">Logout</button>
+        `;
+    }
 
     fetchCredits();
 
@@ -86,4 +97,10 @@ if (hamburgerBtn && mobileMenu) {
     hamburgerBtn.addEventListener("click", () => {
         mobileMenu.classList.toggle("active");
     });
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth >= 800 && mobileMenu) {
+        mobileMenu.classList.remove("active");
+    }
+});
 }

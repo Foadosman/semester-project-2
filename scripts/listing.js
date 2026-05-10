@@ -22,6 +22,8 @@ async function fetchListing() {
 }
 
 function renderListing(listing) {
+    const token = localStorage.getItem("token");
+
     const imageUrl =
         listing.media && listing.media.length > 0 && listing.media[0].url
             ? listing.media[0].url
@@ -71,15 +73,15 @@ function renderListing(listing) {
                 <p class="text-muted mb-2">Bids: ${listing._count.bids ?? 0}</P>
                 <p class="mb-3">Ends: ${endsAtText}</p>
                 <p class="mb-4">${listing.description || "No description available"}</p>
-                ${
-                    listing.seller?.name === username
+                
+                ${listing.seller?.name === username
                      ? `
                         <div class="d-flex gap-2 my-3">
                             <a href="./edit.html?id=${listing.id}" class="btn btn-primary-custom">Edit listing</a>
                             <buttun id="deleteListingBtn" class="btn btn-danger">Delete listing</button>
                         </div>
                     `
-                : `
+                : token?`
                     <form id="bidForm" class="d-flex gap-2 my-3">
                         <input
                             type="number"
@@ -90,6 +92,10 @@ function renderListing(listing) {
                         >
                         <button type="submit" class="btn btn-primary-custom">Place bid</button>
                     </form>
+                    ` : `
+                        <div class="alert alert-info mt-3">
+                            Please log in to place a bid.
+                        </div>
                     `
                 }
                 <div class="bid-history mt-4">
@@ -126,10 +132,10 @@ function renderListing(listing) {
                 const result = await response.json();
 
                 if (!response.ok) {
-                    alert("Bid must be higher than current highest bid.");
+                    const errorMessage = result.errors?.[0]?.message || "Bid failed. Please try again.";
+                    alert(errorMessage);
                     return;
                 }
-                console.log("Bid result:", result);
                 fetchListing();
             } catch (error) {
                 console.error("Bid failed:", error);
@@ -141,6 +147,12 @@ function renderListing(listing) {
 
     if (deleteListingBtn) {
         deleteListingBtn.addEventListener("click", async () =>{
+            const confirmed = confirm("Are you sure you want to delete this listing?");
+
+            if (!confirmed) {
+                return;
+            }
+
             const token = localStorage.getItem("token");
 
             try {
@@ -151,8 +163,6 @@ function renderListing(listing) {
                         "X-Noroff-API-Key": "366c81fc-445b-4c5c-baea-4fad513762ba"
                     }
                 });
-
-                console.log("Delete response:", response);
 
                 window.location.href = "../profile/index.html";
             } catch (error) {

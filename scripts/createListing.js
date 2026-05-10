@@ -40,8 +40,6 @@ if (createListingForm) {
 
             const result = await response.json();
 
-            console.log("Create listing result:", result);
-
             window.location.href = "../profile/index.html";
         } catch (error) {
             console.error("create listing failed;", error);

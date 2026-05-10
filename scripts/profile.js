@@ -25,8 +25,6 @@ async function fetchProfile() {
 
         const result = await response.json();
 
-        console.log("profile:", result.data);
-
         renderProfile(result.data);
         renderListings(result.data.listings);
         fetchProfileBids();
@@ -54,7 +52,7 @@ function renderProfile(profile) {
         <p><strong>Bio:</strong> ${profile.bio || "No bio yet"}</p>
         <p><strong>Credits:</strong> ${profile.credits}</p>
 
-        <a href="./edit.html" class="btn btn-primary-custom mt-3">Edit profile</a>
+        <a href="./edit.html" class="btn btn-secondary-custom mt-3">Edit profile</a>
     `;
 }
 
@@ -78,7 +76,7 @@ function renderListings(listings) {
             <div class="listing-card p-3 shadow-sm h-100">
                 ${
                     imageUrl
-                        ? `<img src="${imageUrl}" class="img-fluid rounded mb-2">`
+                        ? `<a href="../listings/listing.html?id=${listing.id}"><img src="${imageUrl}" class="img-fluid rounded mb-2"></a>`
                         : `<div class="listing-image-placeholder"></div>`
                 }
                 <h3 class="h5 mb-1">${listing.title}</h3>
@@ -106,7 +104,6 @@ async function fetchProfileBids() {
 
         const result = await response.json();
 
-        console.log("profile bids:", result.data);
         renderBidListings(result.data);
     } catch (error) {
         console.error("Failed to fetch profile bids:", error)
@@ -149,7 +146,7 @@ function renderBidListings(bids) {
             <div class="listing-card p-3 shadow-sm h-100">
                 ${
                     imageUrl
-                        ? `<img src="${imageUrl}" class="listing-image">`
+                        ? `<a href="../listings/listing.html?id=${listing.id}"><img src="${imageUrl}" class="listing-image"></a>`
                         : `<div class="listing-image-placeholder"></div>`
                 }
                 <h3 class="h5 mb-1">${listing.title}</h3>

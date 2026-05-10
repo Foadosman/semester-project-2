@@ -22,7 +22,6 @@ async function fetchProfile() {
 
         fillForm(profile);
 
-        console.log("Edit Profile", profile);
     } catch (error) {
         console.error("Failed to fetch Profile:", error);
     }
@@ -67,14 +66,12 @@ if (form) {
 
             const result = await response.json();
 
-            console.log("Update Profile result:", result);
-
             if (!response.ok) {
                 console.error("Profile update failed:", result);
                 return;
             }
 
-            //window.location.href = "./index.html";
+            window.location.href = "./index.html";
         } catch (error) {
             console.error("Failed to update Prodile:", error);
         }
